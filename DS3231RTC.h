@@ -30,6 +30,8 @@ bit0 A1IE   Alarm1 interrupt enable (1 to enable)
 #define DS3231_CONTROL_ADDR         0x0E
 #define DS3231_STATUS_ADDR          0x0F
 
+#define DS3231_CTRL_ID 104
+
 // library interface description
 class DS3231RTC
 {
