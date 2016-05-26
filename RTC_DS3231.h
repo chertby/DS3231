@@ -1,10 +1,10 @@
 /*
- * DS3231RTC.h - library for DS3231 RTC
+ * RTC_DS3231.h - library for DS3231 RTC
  * This library is intended to be uses with Arduino Time.h library functions
  */
 
-#ifndef DS3231RTC_h
-#define DS3231RTC_h
+#ifndef RTC_DS3231_h
+#define RTC_DS3231_h
 
 #include <Time.h>
 
@@ -33,20 +33,21 @@ bit0 A1IE   Alarm1 interrupt enable (1 to enable)
 #define DS3231_CTRL_ID 104
 
 // library interface description
-class DS3231RTC
+class RTC_DS3231
 {
   // user-accessible "public" interface
   public:
-    DS3231RTC();
-    static time_t get();
+  	RTC_DS3231();
+  	static bool lostPower(void);
+  	static time_t get();
 	static void set(time_t t);
 	static void read(tmElements_t &tm);
 	static void write(tmElements_t &tm);
 	static float getTemp();
 
   private:
-	static uint8_t dec2bcd(uint8_t num);
-    static uint8_t bcd2dec(uint8_t num);
+  	static uint8_t dec2bcd(uint8_t num);
+  	static uint8_t bcd2dec(uint8_t num);
 
   protected:
 	static void set_sreg(uint8_t val);
@@ -56,6 +57,6 @@ class DS3231RTC
 	static uint8_t get_creg();
 };
 
-extern DS3231RTC RTC;
+extern RTC_DS3231 RTC;
 
 #endif
