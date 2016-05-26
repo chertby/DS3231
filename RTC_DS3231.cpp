@@ -10,6 +10,11 @@
 #include <Wire.h>
 #include "RTC_DS3231.h"
 
+RTC_DS3231::RTC_DS3231()
+{
+  Wire.begin();
+}
+  
 // PUBLIC FUNCTIONS
 bool RTC_DS3231::begin(void) {
   Wire.begin();
@@ -154,3 +159,5 @@ uint8_t get_creg() {
 
 	return rv;
 }
+
+RTC_DS3231 RTC = RTC_DS3231(); // create an instance for the user
