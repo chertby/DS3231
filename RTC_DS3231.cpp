@@ -16,6 +16,10 @@ RTC_DS3231::RTC_DS3231()
 }
   
 // PUBLIC FUNCTIONS
+bool RTC_DS3231::begin(void) {
+  Wire.begin();
+  return true;
+}
 
 bool RTC_DS3231::lostPower(void) {
   return (get_sreg() >> 7);
