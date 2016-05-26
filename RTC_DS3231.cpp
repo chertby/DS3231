@@ -1,19 +1,5 @@
 /*
-  DS3231RTC.cpp - library for DS3231 RTC
-  
-  Copyright (c) Wagner Sartori Junior 2011
-  Copyright (c) Michael Margolis 2009
-  This library is intended to be uses with Arduino Time.h library functions
-  This file is part of TrunetClock.
-  TrunetClock program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  You should have received a copy of the GNU General Public License
+  RTC_DS3231.cpp - library for DS3231 RTC
 */
 #if ARDUINO >= 100
 #include <Arduino.h>
@@ -22,22 +8,27 @@
 #endif
 
 #include <Wire.h>
-#include "DS3231RTC.h"
+#include "RTC_DS3231.h"
 
-DS3231RTC::DS3231RTC()
+RTC_DS3231::RTC_DS3231()
 {
   Wire.begin();
 }
   
 // PUBLIC FUNCTIONS
-time_t DS3231RTC::get()   // Aquire data from buffer and convert to time_t
+
+bool RTC_DS3231::lostPower(void) {
+  return (read_i2c_register(DS3231_ADDRESS, DS3231_STATUSREG) >> 7);
+}
+
+time_t RTC_DS3231::get()   // Aquire data from buffer and convert to time_t
 {
   tmElements_t tm;
   read(tm);
   return(makeTime(tm));
 }
 
-void  DS3231RTC::set(time_t t)
+void  RTC_DS3231::set(time_t t)
 {
   tmElements_t tm;
   breakTime(t, tm);
@@ -48,7 +39,7 @@ void  DS3231RTC::set(time_t t)
 }
 
 // Aquire data from the RTC chip in BCD format
-void DS3231RTC::read( tmElements_t &tm)
+void RTC_DS3231::read( tmElements_t &tm)
 {
   Wire.beginTransmission(DS3231_CTRL_ID);
   Wire.write((uint8_t)0);
@@ -66,7 +57,7 @@ void DS3231RTC::read( tmElements_t &tm)
   tm.Year = y2kYearToTm((bcd2dec(Wire.read())));
 }
 
-void DS3231RTC::write(tmElements_t &tm)
+void RTC_DS3231::write(tmElements_t &tm)
 {
   Wire.beginTransmission(DS3231_CTRL_ID);
   Wire.write((uint8_t)0); // reset register pointer
@@ -82,7 +73,7 @@ void DS3231RTC::write(tmElements_t &tm)
   Wire.endTransmission();  
 }
 
-float DS3231RTC::getTemp()
+float RTC_DS3231::getTemp()
 {
   byte tMSB, tLSB;
   float temp3231;
@@ -112,13 +103,13 @@ float DS3231RTC::getTemp()
 // PRIVATE FUNCTIONS
 
 // Convert Decimal to Binary Coded Decimal (BCD)
-uint8_t DS3231RTC::dec2bcd(uint8_t num)
+uint8_t RTC_DS3231::dec2bcd(uint8_t num)
 {
   return ((num/10 * 16) + (num % 10));
 }
 
 // Convert Binary Coded Decimal (BCD) to Decimal
-uint8_t DS3231RTC::bcd2dec(uint8_t num)
+uint8_t RTC_DS3231::bcd2dec(uint8_t num)
 {
   return ((num/16 * 10) + (num % 16));
 }
@@ -165,4 +156,4 @@ uint8_t get_creg() {
 	return rv;
 }
 
-DS3231RTC RTC = DS3231RTC(); // create an instance for the user
+RTC_DS3231 RTC = RTC_DS3231(); // create an instance for the user
