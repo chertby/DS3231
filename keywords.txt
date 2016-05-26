@@ -11,6 +11,7 @@
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+lostPower KEYWORD2
 get	KEYWORD2
 set KEYWORD2
 read KEYWORD2
