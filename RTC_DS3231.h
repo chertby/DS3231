@@ -38,7 +38,7 @@ class RTC_DS3231
   // user-accessible "public" interface
   public:
   	RTC_DS3231();
-  	static bool lostPower(void);
+  	bool lostPower(void);
   	static time_t get();
 	static void set(time_t t);
 	static void read(tmElements_t &tm);
