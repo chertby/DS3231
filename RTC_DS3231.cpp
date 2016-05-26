@@ -18,14 +18,7 @@ RTC_DS3231::RTC_DS3231()
 // PUBLIC FUNCTIONS
 
 bool RTC_DS3231::lostPower(void) {
-  //return (read_i2c_register(DS3231_CTRL_ID, DS3231_STATUSREG) >> 7);
-  
-  Wire.beginTransmission(DS3231_CTRL_ID);
-  Wire.write((byte)DS3231_STATUSREG);
-  Wire.endTransmission();
-
-  Wire.requestFrom(DS3231_CTRL_ID, (byte)1);
-  return Wire.read();
+  return (get_sreg() >> 7);
 }
 
 time_t RTC_DS3231::get()   // Aquire data from buffer and convert to time_t
